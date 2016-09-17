@@ -21,6 +21,9 @@ LIST(APPEND LINK_LIBS
     ${OpenCV_LIBS}
 )
 ################################################################################
-#EXECUTABLE
-add_executable(${PROJECT_NAME} ${CRAZY_LANDER_SOURCES})
+#EXECUTABLES
+add_executable(${PROJECT_NAME} ${CRAZY_LANDER_SOURCES} src/main.cpp)
 target_link_libraries(${PROJECT_NAME} ${LINK_LIBS})
+
+add_executable(tag_generator ${CRAZY_LANDER_SOURCES} src/tag_generator.cpp)
+target_link_libraries(tag_generator ${LINK_LIBS})

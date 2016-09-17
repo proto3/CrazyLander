@@ -8,14 +8,10 @@ int main()
     cv::Mat markerImage;
     cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
 
-    while(true)
-    {
-        cv::aruco::drawMarker(dictionary, 18, 500, markerImage, 1);
-        cv::imshow("marker", markerImage);
+    cv::aruco::drawMarker(dictionary, 18, 500, markerImage, 1);
+    cv::imwrite( "marker.jpg", markerImage);
 
-        if(cv::waitKey(30) >= 0)
-            exit(0);
-
-        usleep(200);
-    }
+    cv::imshow("marker", markerImage);
+    cv::waitKey(0);
+    return 0;
 }
