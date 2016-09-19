@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/antoine/git/crazylander/ros_workspace/devel/setup.sh
