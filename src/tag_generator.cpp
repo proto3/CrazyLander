@@ -6,9 +6,12 @@
 int main()
 {
     cv::Mat markerImage;
-    cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
+
+	//cv::aruco::Dictionary dictionary = cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);    
+	cv::Ptr<cv::aruco::Dictionary> dictionary=cv::aruco::getPredefinedDictionary(cv::aruco::DICT_4X4_50);
 
     cv::aruco::drawMarker(dictionary, 18, 500, markerImage, 1);
+
     cv::imwrite( "marker.jpg", markerImage);
 
     cv::imshow("marker", markerImage);
