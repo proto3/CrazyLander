@@ -19,3 +19,18 @@ v4l2-ctl -c exposure_gain=255     #use lower value if noisy
 v4l2-ctl -c exposure_auto=1       #disable auto eposure
 v4l2-ctl -c exposure_absolute=100 #test to find the lowest working value
 ```
+
+## Control the crazyflie with python
+You need to install cflib
+clone the repo at :
+```
+git clone https://github.com/bitcraze/crazyflie-lib-python.git
+```
+then run 
+```
+sudo pip install crazyflie-lib-python/
+```
+to try it run 
+```
+python examples/scan.py
+```
