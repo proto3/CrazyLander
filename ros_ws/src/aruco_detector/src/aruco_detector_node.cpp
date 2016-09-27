@@ -16,6 +16,8 @@ int main(int argc, char* argv[])
 
     cv::Mat img, imageCopy;
     cv::VideoCapture *camera = new cv::VideoCapture(1);
+	camera->set(CV_CAP_PROP_FRAME_WIDTH, 1280);
+	camera->set(CV_CAP_PROP_FRAME_HEIGHT, 720);
 	cv::Mat cameraMatrix;
 	cv::Mat cameraCoeff;
 
