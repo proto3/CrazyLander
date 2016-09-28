@@ -1,4 +1,5 @@
 #include <PID.h>
+#include <algorithm>
 
 PID::PID(float kp, float ki, float kd)
 : kp(kp),
@@ -6,7 +7,7 @@ PID::PID(float kp, float ki, float kd)
   kd(kd),
   i(0.0),
   prev(0.0),
-  i_limit(5.0),
+  i_limit(5.0)
 {}
 
 void PID::process(float in, float &out)
@@ -20,5 +21,5 @@ void PID::process(float in, float &out)
 
     prev = in;
 
-    return p+i+d;
+    out = p+i+d;
 }
