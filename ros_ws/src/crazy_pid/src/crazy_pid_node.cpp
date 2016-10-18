@@ -2,6 +2,8 @@
 #include "sensor_msgs/Joy.h"
 #include <std_msgs/Float32MultiArray.h>
 #include <sstream>
+#include <Eigen/Core>
+#include <Eigen/Geometry>
 
 #include <cmath>
 #include <PID.h>
@@ -17,33 +19,22 @@ void arucoPosCallback(const std_msgs::Float32MultiArray::ConstPtr& msg)
 
     joy_msg.axes[0] = 0.0;
 
-    float cons_x = 0.0;
-    float cons_y = 0.0;
-    float cons_z = 100.0;
+
+	ROS_INFO("msg %lf / %lf / %lf / %lf ", msg->data[0], msg->data[1], msg->data[2], msg->data[3]);
+
+	Eigen::Vector3f pos_cam(msg->data[0], msg->data[1], msg->data[2]);
+	Eigen::Vector3f cons(0.0, 0.0, 1.0);
+
+	Eigen::Vector3f dir_cam = cons - pos_cam;
+
+	Eigen::AngleAxis<float> rot(msg->data[3] * 180 / M_PI, Eigen::Vector3f(0,0,1));
+
+	Eigen::Vector3f dir_crazy = rot * dir_cam;
 
 
-    float dir_z = cons_z - msg->data[2];
-
-    pid_z.process(dir_z, joy_msg.axes[1]);
-
-    float dir_x_cam, dir_y_cam;
-    dir_x_cam = cons_x - msg->data[0];
-    dir_y_cam = cons_y - msg->data[1];
- 
-
-    if(std::abs(msg->data[3]) < 0.001)
-    {
-        //TODO display error
-        return;
-    }
-
-    float alpha = std::atan(msg->data[4] / msg->data[3]);
-    float dir_x, dir_y;
-    dir_x = dir_x_cam * std::cos(alpha);
-    dir_y = dir_y_cam * std::sin(alpha);
-
-    pid_x.process(dir_x, joy_msg.axes[3]);
-    pid_y.process(dir_y, joy_msg.axes[4]);
+    pid_x.process(dir_crazy[0], joy_msg.axes[3]);
+    pid_y.process(dir_crazy[1], joy_msg.axes[4]);
+	pid_z.process(dir_crazy[2], joy_msg.axes[1]);
 
     command_pub.publish(joy_msg);
 }

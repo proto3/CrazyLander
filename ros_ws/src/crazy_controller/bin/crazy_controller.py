@@ -93,16 +93,25 @@ class MotorRampExample:
     '''
 def callback_joystick(data, crazy):
     #rospy.loginfo(rospy.get_caller_id() + "I heard ")
-    thrust = max(0, data.axes[1]) * 0xffff
+    global auto_thrust
+    if data.axes[2] < 0:
+        thrust = min(1,max(0, auto_thrust)) * 0xffff
+    else:
+        thrust = max(0, data.axes[1]) * 0xffff
     yaw = data.axes[0] * -100
     roll = data.axes[3] * -30
     pitch = data.axes[4] * 30
-    #rospy.loginfo(rospy.get_caller_id() + "send %s", str(max(0, data.axes[1]) * 100000))
+    rospy.loginfo(rospy.get_caller_id() + "send %s", str(auto_thrust))
     crazy.send_to_crazyflie(roll, pitch, yaw, thrust)
 	# rospy.loginfo(rospy.get_caller_id() + "I heard %s", data.axes)
 
+def callback_joystick_autopilot(data, crazy):
+    global auto_thrust
+    auto_thrust = data.axes[1]
 
 if __name__ == '__main__':
+    global auto_thrust
+    auto_thrust = 0
     # Initialize the low-level drivers (don't list the debug drivers)
     cflib.crtp.init_drivers(enable_debug_driver=False)
     # Scan for Crazyflies and use the first one found
@@ -116,6 +125,7 @@ if __name__ == '__main__':
         le = MotorRampExample(available[0][0])
         rospy.init_node('listener', anonymous=True)
         rospy.Subscriber("joy", Joy, callback_joystick, le)
+        rospy.Subscriber("autopilot_joy", Joy, callback_joystick_autopilot, le)
         rospy.spin()
     else:
         print('No Crazyflies found, cannot run example')

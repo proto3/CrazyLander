@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS roscpp)
 # find_package(Boost REQUIRED COMPONENTS system)
 #set(OpenCV_DIR "/usr/local/share/OpenCV")
 find_package(OpenCV REQUIRED)
-include_directories(${catkin_INCLUDE_DIRS})
+find_package(Eigen3 REQUIRED)
+include_directories(${catkin_INCLUDE_DIRS} ${EIGEN3_INCLUDE_DIR})
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
