@@ -19,3 +19,13 @@ v4l2-ctl -c exposure_gain=255     #use lower value if noisy
 v4l2-ctl -c exposure_auto=1       #disable auto eposure
 v4l2-ctl -c exposure_absolute=100 #test to find the lowest working value
 ```
+
+## ros launch
+```shell
+roscore
+rosrun  aruco_detector aruco_detector_node
+rosparam set joy_node/autorepeat_rate 50
+rosrun joy joy_node
+rosrun crazy_pid crazy_pid_node
+rosrun crazy_controller crazy_controller.py
+```
